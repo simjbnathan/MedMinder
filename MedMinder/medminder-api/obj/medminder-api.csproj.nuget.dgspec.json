@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Julisa\\source\\repos\\Fullstack\\medminder-api\\medminder-api.csproj": {}
+    "C:\\Users\\Julisa\\source\\repos\\Fullstack\\MedMinder\\medminder-api\\medminder-api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Julisa\\source\\repos\\Fullstack\\medminder-api\\medminder-api.csproj": {
+    "C:\\Users\\Julisa\\source\\repos\\Fullstack\\MedMinder\\medminder-api\\medminder-api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Julisa\\source\\repos\\Fullstack\\medminder-api\\medminder-api.csproj",
+        "projectUniqueName": "C:\\Users\\Julisa\\source\\repos\\Fullstack\\MedMinder\\medminder-api\\medminder-api.csproj",
         "projectName": "medminder-api",
-        "projectPath": "C:\\Users\\Julisa\\source\\repos\\Fullstack\\medminder-api\\medminder-api.csproj",
+        "projectPath": "C:\\Users\\Julisa\\source\\repos\\Fullstack\\MedMinder\\medminder-api\\medminder-api.csproj",
         "packagesPath": "C:\\Users\\Julisa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Julisa\\source\\repos\\Fullstack\\medminder-api\\obj\\",
+        "outputPath": "C:\\Users\\Julisa\\source\\repos\\Fullstack\\MedMinder\\medminder-api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Julisa\\AppData\\Roaming\\NuGet\\NuGet.Config",
