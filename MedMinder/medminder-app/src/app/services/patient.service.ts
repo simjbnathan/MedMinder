@@ -1,46 +1,38 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Patient } from '../models/patient.model';
+
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
-  private dummyPatients: Patient[] = [
-    { id: 1, firstName: 'John', lastName: 'Doe', city: 'New York', isActive: true },
-    { id: 2, firstName: 'Jane', lastName: 'Smith', city: 'Los Angeles', isActive: false }
-  ];
+  readonly apiUrl = environment.apiUrl;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getPatients(): Observable<Patient[]> {
-    return of(this.dummyPatients);
+    return this.http.get<Patient[]>(this.apiUrl);
   }
 
-  addPatient(patient: Patient): Observable<Patient> {
-    const newId = this.dummyPatients.length + 1;
-    const newPatient: Patient = { ...patient, id: newId };
-    this.dummyPatients.push(newPatient);
-    return of(newPatient);
+  getPatientsById(id: number): Observable<Patient> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<Patient>(url);
   }
 
-  updatePatient(updatedPatient: Patient): Observable<Patient | null> {
-    const index = this.dummyPatients.findIndex(p => p.id === updatedPatient.id);
-    if (index !== -1) {
-      this.dummyPatients[index] = { ...updatedPatient };
-      return of(updatedPatient);
-    } else {
-      return of(null);
-    }
+  addPatient(item: Patient): Observable<Patient> {
+    return this.http.post<Patient>(this.apiUrl, item);
   }
 
-  deletePatient(id: number): Observable<boolean> {
-    const index = this.dummyPatients.findIndex(p => p.id === id);
-    if (index !== -1) {
-      this.dummyPatients.splice(index, 1);
-      return of(true);
-    } else {
-      return of(false);
-    }
+  editPatient(item: Patient): Observable<Patient> {
+    const url = `${this.apiUrl}/${item.id}`;
+    return this.http.put<Patient>(url, item);
+  }
+
+  deletePatient(id: number): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<void>(url);
   }
 }

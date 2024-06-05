@@ -1,4 +1,4 @@
-@medminder_api_HostAddress = http://localhost:5123
+@medminder_api_HostAddress = https://localhost:5123
 
 GET {{medminder_api_HostAddress}}/weatherforecast/
 Accept: application/json

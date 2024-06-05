@@ -70,7 +70,9 @@ export class PatientListComponent {
   }
 
   addPatient(patient: Patient): void {
-    this.patients.push(patient);
+    this.patients = [...this.patients, patient];
+
+    // Close the form
     this.showAddForm = false;
   }
 
@@ -81,9 +83,17 @@ export class PatientListComponent {
     modalRef.result.then(
       (result) => {
         if (result) {
-          // Update patient details
-          Object.assign(patient, result);
-          this.refreshTable();
+          // Call the editPatient service method with the updated patient object
+          this.patientService.editPatient(result).subscribe(
+            updatedPatient => {
+              // Update patient details in the list with the updated patient object
+              Object.assign(patient, updatedPatient);
+              this.refreshTable();
+            },
+            error => {
+              console.error('Error updating patient:', error);
+            }
+          );
         }
       },
       (reason) => {
@@ -93,9 +103,10 @@ export class PatientListComponent {
     );
   }
 
+
   deletePatient(patient: Patient): void {
-    // Assuming you have a delete method in your PatientService
-    this.patientService.deletePatient(patient.id)
+    const id = patient.id ?? 0;
+    this.patientService.deletePatient(id)
       .subscribe(
         () => {
           this.patients = this.patients.filter(p => p !== patient); // Remove the deleted patient from the list

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Patient } from '../../models/patient.model';
 import { CommonModule } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PatientService } from '../../services/patient.service';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ export class PatientFormComponent implements OnInit {
 
   patientForm: FormGroup;
 
-  constructor(private fb: FormBuilder, public activeModal: NgbActiveModal) {
+  constructor(private fb: FormBuilder, public activeModal: NgbActiveModal, private patientService: PatientService) {
     this.patientForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -35,15 +36,30 @@ export class PatientFormComponent implements OnInit {
   submitForm(): void {
     if (this.patientForm.valid) {
       const formData = this.patientForm.value;
-      const newPatient: Patient = {
-        id: this.patient ? this.patient.id : 0,
+      const editedPatient: Patient = {
+        id: this.patient ? this.patient.id : null,
         firstName: formData.firstName,
         lastName: formData.lastName,
         city: formData.city,
         isActive: formData.isActive
       };
-      this.patientSubmitted.emit(newPatient);
-      this.activeModal.close(newPatient);
+
+      const operation = this.patient ? this.patientService.editPatient(editedPatient) : this.patientService.addPatient(editedPatient);
+
+      operation.subscribe(
+        (response) => {
+          const action = this.patient ? 'updated' : 'added';
+          console.log(`Patient ${action} successfully:`, response);
+          this.patientSubmitted.emit(response);
+          this.patientForm.reset(); // Reset the form after successful submission
+          this.activeModal.close(); // Close the modal
+        },
+        (error) => {
+          const action = this.patient ? 'updating' : 'adding';
+          console.error(`Error ${action} patient:`, error);
+          // Optionally, display error message to the user
+        }
+      );
     }
   }
 }

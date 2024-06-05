@@ -7,6 +7,8 @@ using medminder_api.Data;
 using medminder_api.Repositories;
 using medminder_api.Services;
 using medminder_api.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +21,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 
-builder.Services.AddControllers(); // Add this line to add controller services
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200", "https://localhost:4200")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowOrigin");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -62,12 +76,9 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseAuthorization();
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
 
 app.Run();
-
