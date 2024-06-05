@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Patient } from '../models/patient.model';
 
 import { environment } from '../environments/environment';
@@ -22,17 +22,26 @@ export class PatientService {
     return this.http.get<Patient>(url);
   }
 
-  addPatient(item: Patient): Observable<Patient> {
-    return this.http.post<Patient>(this.apiUrl, item);
+  addPatient(patient: Patient): Observable<Patient> {
+    // Ensure 'id' is set to 0 for new patient
+    const newPatient = { ...patient, id: 0 };
+    return this.http.post<Patient>(this.apiUrl, newPatient).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  editPatient(item: Patient): Observable<Patient> {
-    const url = `${this.apiUrl}/${item.id}`;
-    return this.http.put<Patient>(url, item);
+  editPatient(patient: Patient): Observable<Patient> {
+    return this.http.put<Patient>(`${this.apiUrl}/${patient.id}`, patient).pipe(
+      catchError(this.handleError)
+    );
   }
-
   deletePatient(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<void>(url);
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('An error occurred:', error);
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 }

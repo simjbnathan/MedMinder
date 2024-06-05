@@ -28,8 +28,12 @@ export class PatientFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('Initializing Patient Form');
+    console.log('Received Patient Data:', this.patient);
+
     if (this.patient) {
       this.patientForm.patchValue(this.patient);
+      console.log('Form patched with patient data:', this.patientForm.value);
     }
   }
 
@@ -37,29 +41,36 @@ export class PatientFormComponent implements OnInit {
     if (this.patientForm.valid) {
       const formData = this.patientForm.value;
       const editedPatient: Patient = {
-        id: this.patient ? this.patient.id : null,
+        id: this.patient?.id ?? null,
         firstName: formData.firstName,
         lastName: formData.lastName,
         city: formData.city,
         isActive: formData.isActive
       };
 
-      const operation = this.patient ? this.patientService.editPatient(editedPatient) : this.patientService.addPatient(editedPatient);
+      console.log('Edited Patient Data:', editedPatient);
+
+      const operation = this.patient && this.patient.id !== null ?
+        this.patientService.editPatient(editedPatient) :
+        this.patientService.addPatient(editedPatient);
 
       operation.subscribe(
         (response) => {
-          const action = this.patient ? 'updated' : 'added';
+          const action = this.patient && this.patient.id !== null ? 'updated' : 'added';
           console.log(`Patient ${action} successfully:`, response);
           this.patientSubmitted.emit(response);
-          this.patientForm.reset(); // Reset the form after successful submission
-          this.activeModal.close(); // Close the modal
+          this.patientForm.reset();
+          this.activeModal.close();
         },
         (error) => {
-          const action = this.patient ? 'updating' : 'adding';
+          const action = this.patient && this.patient.id !== null ? 'updating' : 'adding';
           console.error(`Error ${action} patient:`, error);
-          // Optionally, display error message to the user
+          // Display user-friendly error message
         }
       );
     }
   }
+
+
+
 }

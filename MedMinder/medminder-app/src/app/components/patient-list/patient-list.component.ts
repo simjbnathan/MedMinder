@@ -52,7 +52,7 @@ export class PatientListComponent {
 
   openModal(): void {
     const modalRef = this.modalService.open(PatientFormComponent, { size: 'lg', centered: true });
-    this.newPatient = { id: 0, firstName: '', lastName: '', city: '', isActive: false };
+    this.newPatient = { id: null, firstName: '', lastName: '', city: '', isActive: false }; // Use null for new patient ID
     modalRef.componentInstance.patient = this.newPatient;
 
     modalRef.result.then(
@@ -70,7 +70,15 @@ export class PatientListComponent {
   }
 
   addPatient(patient: Patient): void {
-    this.patients = [...this.patients, patient];
+    this.patientService.addPatient(patient).subscribe(
+      addedPatient => {
+        this.patients = [...this.patients, addedPatient];
+        this.refreshTable();
+      },
+      error => {
+        console.error('Error adding patient:', error);
+      }
+    );
 
     // Close the form
     this.showAddForm = false;
@@ -87,8 +95,11 @@ export class PatientListComponent {
           this.patientService.editPatient(result).subscribe(
             updatedPatient => {
               // Update patient details in the list with the updated patient object
-              Object.assign(patient, updatedPatient);
-              this.refreshTable();
+              const index = this.patients.findIndex(p => p.id === updatedPatient.id);
+              if (index !== -1) {
+                this.patients[index] = updatedPatient;
+                this.refreshTable();
+              }
             },
             error => {
               console.error('Error updating patient:', error);
