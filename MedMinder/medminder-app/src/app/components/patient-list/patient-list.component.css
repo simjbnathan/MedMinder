@@ -1,0 +1,14 @@
+/* Resize the modal */
+.modal-dialog {
+    max-width: 80%; /* Adjust the width as needed */
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
+  
+  /* Resize the input fields */
+  .form-control {
+    width: 100%; /* Make the input fields take up the full width of their container */
+  }
+  

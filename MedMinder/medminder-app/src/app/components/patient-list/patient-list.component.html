@@ -1,0 +1,52 @@
+<div class="container mt-4">
+    <button class="btn btn-primary mb-2" (click)="showAddPatientForm()">Add New</button>
+  </div>
+  
+  <!-- Patient Table -->
+  <div *ngIf="!showAddForm" class="container">
+    <table *ngIf="patients && patients.length" class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>City</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of patients">
+          <td>{{ patient.id }}</td>
+          <td>{{ patient.firstName }}</td>
+          <td>{{ patient.lastName }}</td>
+          <td>{{ patient.city }}</td>
+          <td>{{ patient.isActive ? 'Yes' : 'No' }}</td>
+          <td>
+            <button class="btn btn-secondary me-2" (click)="editPatient(patient)">Edit</button>
+            <button class="btn btn-danger" (click)="deletePatient(patient)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="!patients || patients.length === 0" class="no-data-message">No patients found.</div>
+  </div>
+  
+  <!-- Modal -->
+  <ng-template #patientModal let-modal>
+    <div class="modal-dialog custom-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Add / Edit Patient</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-patient-form (patientSubmitted)="addPatient($event)"></app-patient-form>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  
