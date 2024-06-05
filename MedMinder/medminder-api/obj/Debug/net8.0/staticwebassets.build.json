@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "+YQArI46lq+UsSKcuARBOIDZocf7BR5UziHabrX8AEQ=",
+  "Source": "medminder-api",
+  "BasePath": "_content/medminder-api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

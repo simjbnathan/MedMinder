@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("medminder-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d53ffe4974df3ecbbf3826b023e6f072168c223")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8bcd0429350bbdc763a3b652c812227f549334ff")]
 [assembly: System.Reflection.AssemblyProductAttribute("medminder-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("medminder-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
